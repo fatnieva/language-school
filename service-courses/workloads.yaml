@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-courses
+spec:
+  selector:
+    app: service-courses
+  type: NodePort
+  ports:
+    - name: http
+      port: 8083
+      nodePort: 31003
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-courses
+spec:
+  selector:
+    matchLabels:
+      app: service-courses
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: service-courses
+    spec:
+      containers:
+        - name: server
+          image: fatnieva/service-courses:latest
+          ports:
+            - name: http
+              containerPort: 8083
+
+---
